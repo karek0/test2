@@ -1,0 +1,152 @@
+Instalacja pod Windows
+
+Pobierz i zainstaluj:
+Cygwin (jeœli jeszcze nie masz)
+msysGit (git dla Windows)
+(pakiety dla innych systemów ni¿ Windows, znajduj¹ siê na stronie http://git-scm.com/download)
+Podczas instalacji zaznacz przydatne „Windows Explorer integration”.
+
+Po instalacji powinieneœ mieæ polecenia Gita po klikniêciu prawym na dowolnym folderze:
+
+Git Bash here
+Git GUI here
+Do pracy u¿ywa siê linii poleceñ - Git bash. Nie-konsolowcy mog¹ te¿ skorzystaæ z Git GUI. Dla nich te¿ przydatne mo¿e byæ polecenie gitk i pakiet Git Extensions. Polecam konsolê, nie GUI.
+
+Konfiguracja
+
+User, email
+
+Na pocz¹tek musisz powiedzieæ gitowi (i innym) jak siê nazywasz i jaki masz adres e-mail.
+
+git config --global user.name="John Wayne"
+git config --global user.email="john@example.com"
+(Mo¿na pomini¹æ --global jeœli chce siê mieæ inne ustawienia dla ka¿dego repozytorium.)
+Kolory
+
+git config --global color.status auto
+git config --global color.branch auto
+Domyœlny edytor
+
+Skrypt uruchamiaj¹cy domyœlny edytor
+
+Jako domyœlnego edytora zamiast Notatnika u¿ywam Notepad++. Potrzebny jest skrypt shella, który go w³¹czy. Aby móc ten skrypt wykonywaæ tak¿e pod Konsol¹ Windows, nadajê mu rozszerzenie .bat:
+
+#!/bin/sh
+"c:/Program Files/Notepad++/notepad++.exe" -multiInst $*
+Taki plik mam zapisany w C:/prog/git/npp.bat, a potem konfigurujê gita, ustawiaj¹c domyœlny edytor:
+
+Domyœlny edytor Gita
+
+git config --global core.editor C:/prog/git/npp.bat
+SSH
+
+Jeœli zamierzasz pracowaæ w grupie, bêdzie Ci te¿ potrzebny publiczny klucz .ssh. Wygenerujesz go poleceniem:
+
+ssh-keygen -C "john@example.com" -t rsa
+        
+Kiedy zapyta o passphrase, naciœnij enter; kiedy zapyta o folder docelowy - te¿ enter.
+
+Pliki z kluczami publicznym i prywatnym zostan¹ zapisane w folderze .ssh w folderze u¿ytkownika:
+
+c:\documents and settings\user\.ssh\id_rsa.pub - (klucz publiczny)
+c:\documents and settings\user\.ssh\id_rsa - (klucz prywatny)
+Zawartoœæ pliku id_rsa.pub skopiujesz w odpowiednie miejsce, ale o tym póŸniej.
+
+Pliki do wykluczenia
+
+Jeœli nie chcesz, aby Git zajmowa³ siê jakimiœ plikami (np. skompilowanymi albo konfiguracj¹ projektu), mo¿esz te pliki okreœliæ w pliku:
+
+/.git/info/exclude
+Pierwsze kroki
+
+Gdzie jestem?
+
+git status
+Wyœwietla informacje o stanie repozytorium (zmienione pliki, aktualn¹ bran¿ê itp.)
+
+Tworzenie nowego repozytorium
+
+Za pomoc¹ Git Basha przejdŸ do katalogu, w którym chcesz utworzyæ nowe repozytorium (nowy projekt, lub katalog z istniej¹cymi plikami projektu).
+
+Repozytorium w bie¿¹cym katalogu tworzy siê poleceniem:
+
+git init
+W bie¿¹cym katalogu zostanie utworzony katalog .git w którym bêd¹ przechowywane wszystkie informacje o repozytorium (np. konfiguracja tego repozytorium, pliki do wykluczenia itp.)
+
+Dodawanie plików do repozytorium
+
+Dodanie poszczególnych plików
+
+git add nazwa_pliku
+Dodanie wszystkich nowych plików (jeszcze nie dodanych do repo)
+
+git add .
+Tryb interaktywny
+
+git add -i
+Tu mo¿na wybraæ szczegó³owo, które pliki maj¹ zostaæ dodane do repozytorium.
+
+Tak naprawdê, pliki które pojawi¹ siê w folderze z zainicjowanym repozytorium s¹ ju¿ od razu do niego dodane, bo Git ma ju¿ na nie oko. To co powy¿ej opisane, to dodanie plików do poszczególnego commita. Ostatecznie dodanie plików (zmian w plikach) odbywa siê poleceniem commit.
+
+commit
+
+git commit
+To polecenie potwierdza wszystkie zmiany w plikach. Otwiera siê domyœlny edytor, w którym opisujesz zmiany, które wprowadzi³eœ.
+
+git commit -m"Zmieni³em to i tamto"
+To wersja commita bez otwierania edytora - opis commita (message) jest wpisywany od razu w linii poleceñ.
+
+Branch'e
+
+git branch
+Wyœwietla informacje o branch'ach dostêpnych w repo.
+
+git checkout mybranch
+Prze³¹cza na branch o nazwie mybranch
+
+Aby utworzyæ now¹ bran¿ê z plików z aktualnej bran¿y, u¿yj checkout i prze³¹cznika -b:
+
+git checkout -b mynewbranch
+Praca zdalna
+
+Na pocz¹tek ma³y s³owniczek nazw operacji:
+
+clone
+utworzenie kopii zdalnego repozytorium na lokalnym dysku
+fetch
+pobranie zmienionych plików ze zdalnego repozytorium
+pull
+pobranie plików ze zdalnego repozytorium i automatyczne wykonanie merge
+push
+wys³anie zmian na zdalny serwer
+Git obs³uguje wiele protoko³ów:
+
+git:// - natywny protokó³ gita, bardo wydajny
+http:// - o wiele mniej wydajny, ale te¿ obs³ugiwany
+file:// - transfer pomiêdzy lokalnymi repozytoriami
+ssh://, svn:// - ró¿ne inne, oraz ich kombinacje np. (git+ssh://)
+Clone
+
+Najczêœciej u¿ywane polecenie kiedy chcesz zacz¹æ pracê z plikami z innego repozytorium.
+
+Przyk³ady:
+
+git clone file://c:/users/user/myrepo.git
+git clone git://github.com/taat/myzend.git
+Po wykonaniu clone, repozytorium z którego klonowano zostaje automatycznie nazwane origin w bie¿¹cym repozytorium. Bran¿a testowa w tym zdalnym repo to wtedy origin/master.
+
+Push
+
+Aby wys³aæ zmiany do „oryginalnego” repozytorium (z którego klonowano), u¿yj polecenia:
+
+git push <nazwa_zdalnego_repo> <branch_do_wyslania>
+czyli:
+git push origin mybranch
+Push (czyli wysy³anie zmian do innego repozytorium) u¿ywa trochê innej sk³adni ni¿ clone:
+
+git push git@github.com:taat/myzend.git mybranch
+To dopiero pocz¹tek…
+
+Prawdziwa zabawa zaczyna siê od merge, diff, log itp.
+
+Polecam po kolei:
